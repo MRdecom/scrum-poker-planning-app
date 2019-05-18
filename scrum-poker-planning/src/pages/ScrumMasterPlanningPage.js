@@ -49,7 +49,9 @@ const voterInfoList = [
 
 
 class ScrumMasterPlanningPage extends Component {
-
+    constructor(props) {
+        super(props);
+    }
     componentDidMount() {
         // getStoryList() her 2 sn de bir güncellenecek.
     }
@@ -58,8 +60,11 @@ class ScrumMasterPlanningPage extends Component {
         // this.props.votedEnded bilgisi alınacak ve buna göre ScrumMasterPanel güncellenecek.
     }
 
-    sendMyPoint = () => {
-
+    sendMyPoint = (point) => {
+        console.log(point);
+    };
+    endVoting = (data) => {
+        console.log(data);
     };
 
     render() {
@@ -68,7 +73,7 @@ class ScrumMasterPlanningPage extends Component {
                 <div className="ScrumMasterPlanningPage">
                     <StoryList storyList={storyListData}/>
                     <ActiveStory storyName='ExampleStory' sendPoint={this.sendMyPoint}/>
-                    <ScrumMasterPanel storyName='ExampleStory' voterInfo={voterInfoList} voteEnded={false}/>
+                    <ScrumMasterPanel storyName='ExampleStory' voterInfo={voterInfoList} voteEnded={false} endVoting={this.endVoting} />
                 </div>
             </BaseContainer>
         )

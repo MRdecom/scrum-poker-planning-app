@@ -2,6 +2,9 @@ import React from 'react';
 import '../style.css';
 import * as propTypes from 'prop-types';
 
+const listOfValues = ['1', '2', '3', '5', '8', '13', '21', '34', '55', '89', '134', '?'];
+
+
 export default class ActiveStory extends React.Component {
     static propTypes = {
         storyName: propTypes.string,
@@ -11,24 +14,21 @@ export default class ActiveStory extends React.Component {
         storyName: 'storyName',
     };
 
+    sendPoint(point) {
+        this.props.sendPoint(point);
+    };
+
     render() {
         return (
             <div className="ActiveStory">
                 <p>Active Story</p>
                 <label>{this.props.storyName}</label>
                 <div className="PointBlock">
-                    <div className="Block">1</div>
-                    <div className="Block">2</div>
-                    <div className="Block">3</div>
-                    <div className="Block">5</div>
-                    <div className="Block">8</div>
-                    <div className="Block">13</div>
-                    <div className="Block">21</div>
-                    <div className="Block">34</div>
-                    <div className="Block">55</div>
-                    <div className="Block">59</div>
-                    <div className="Block">134</div>
-                    <div className="Block">?</div>
+                    {listOfValues.map((elm,i) => {
+                        return (
+                            <div key={i} onClick={this.sendPoint.bind(this, {elm})} className="Block">{elm}</div>
+                        )
+                    })}
                 </div>
             </div>
         );
