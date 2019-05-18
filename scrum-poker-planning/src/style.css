@@ -1,0 +1,12 @@
+.Logo {
+    font-size: xx-large;
+    color: darkblue;
+    inline-size: min-content;
+    text-decoration: none;
+    padding: 5% 5% 5% 5%;
+}
+
+.BaseContainer {
+    background-color: azure;
+    height: max-content;
+}
