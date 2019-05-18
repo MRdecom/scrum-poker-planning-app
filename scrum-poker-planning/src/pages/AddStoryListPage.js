@@ -2,19 +2,92 @@ import React, {Component} from 'react';
 import "../style.css";
 import BaseContainer from "../components/BaseContainer";
 import Input from "../components/Input";
-import Link from "react-router-dom/es/Link";
 import Redirect from "react-router/es/Redirect";
+import axios from 'axios';
+
 
 class AddStoryListPage extends Component {
-state ={
-    sessionName:'',
-    numberOfVoters:0,
-    textAreaVal:'',
-    redirect: false
-};
-    startSession = () => {
+    state = {
+        sessionName: '',
+        numberOfVoters: 0,
+        textAreaVal: '',
+        redirect: false,
 
-        if(this.state.numberOfVoters !== '0' && this.state.sessionName !== '' && this.state.textAreaVal !== '') {
+        data: [],
+        id: 0,
+        message: null,
+        intervalIsSet: false,
+        idToDelete: null,
+        idToUpdate: null,
+        objectToUpdate: null
+    };
+
+    componentDidMount() {
+        this.getDataFromDb();
+        if (!this.state.intervalIsSet) {
+            let interval = setInterval(this.getDataFromDb, 1000);
+            this.setState({ intervalIsSet: interval });
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.state.intervalIsSet) {
+            clearInterval(this.state.intervalIsSet);
+            this.setState({ intervalIsSet: null });
+        }
+    }
+
+    getDataFromDb = () => {
+        fetch("http://localhost:3001/api/getData")
+            .then(data => data.json())
+            .then(res => this.setState({ data: res.data }));
+        debugger;
+    };
+
+    putDataToDB = message => {
+        let currentIds = this.state.data.map(data => data.id);
+        let idToBeAdded = 0;
+        while (currentIds.includes(idToBeAdded)) {
+            ++idToBeAdded;
+        }
+
+        axios.post("http://localhost:3001/api/putData", {
+            id: idToBeAdded,
+            message: message
+        });
+    };
+
+    deleteFromDB = idTodelete => {
+        let objIdToDelete = null;
+        this.state.data.forEach(dat => {
+            if (dat.id == idTodelete) {
+                objIdToDelete = dat._id;
+            }
+        });
+
+        axios.delete("http://localhost:3001/api/deleteData", {
+            data: {
+                id: objIdToDelete
+            }
+        });
+    };
+
+    updateDB = (idToUpdate, updateToApply) => {
+        let objIdToUpdate = null;
+        this.state.data.forEach(dat => {
+            if (dat.id == idToUpdate) {
+                objIdToUpdate = dat._id;
+            }
+        });
+
+        axios.post("http://localhost:3001/api/updateData", {
+            id: objIdToUpdate,
+            update: { message: updateToApply }
+        });
+    };
+
+    startSession = () => {
+        if (this.state.numberOfVoters !== '0' && this.state.sessionName !== '' && this.state.textAreaVal !== '') {
             debugger;
             const req = {
                 'sName': this.state.sessionName,
@@ -29,7 +102,9 @@ state ={
     };
 
     prepareStories = () => {
-        const data = this.state.textAreaVal.split('\n').filter((a)=>{return a !== ''});
+        const data = this.state.textAreaVal.split('\n').filter((a) => {
+            return a !== ''
+        });
         return data;
     };
 
@@ -57,12 +132,13 @@ state ={
             <BaseContainer>
                 <div className="AddStoryListPage">
                     <Input inputType='text' labelText='Session Name' getDataFromInput={this.handleSessionName}/>
-                    <Input inputType='number' labelText='Number of Voters' getDataFromInput={this.handleNumberOfVoters}/>
+                    <Input inputType='number' labelText='Number of Voters'
+                           getDataFromInput={this.handleNumberOfVoters}/>
                     <p>Paste your story list (each line will be converted as a story)</p>
                     <textarea name="stories" cols="60" rows="20" onChange={this.handleTextareaChange}/>
                     <div onClick={this.startSession}>Start Session</div>
                 </div>
-                {this.state.redirect && <Redirect push to="/scrum-master-planning" />}
+                {this.state.redirect && <Redirect push to="/scrum-master-planning"/>}
             </BaseContainer>
 
         )

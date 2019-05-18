@@ -3,18 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
     "lodash": "^4.17.11",
+    "prop-types": "latest",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-redux": "^7.0.3",
-    "react-scripts": "^3.0.1",
-    "redux": "^4.0.1",
-    "redux-logger": "^3.0.6",
-    "axios": "^0.18.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-router-modal": "^1.4.1",
-    "prop-types": "latest"
+    "react-scripts": "^3.0.1",
+    "redux": "^4.0.1",
+    "redux-logger": "^3.0.6"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
