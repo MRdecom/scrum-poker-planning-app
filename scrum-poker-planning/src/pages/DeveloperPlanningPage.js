@@ -1,11 +1,18 @@
 import React, {Component} from 'react';
 import "../style.css";
+import BaseContainer from "../components/BaseContainer";
+import StoryList from "../components/StoryList";
+import ActiveStory from "../components/ActiveStory";
+
 class DeveloperPlanningPage extends Component {
     render() {
         return (
-            <div className = "DeveloperPlanningPage">
-                <p> DeveloperPlanningPage Hello World</p>
-            </div>
+            <BaseContainer>
+                <div className="DeveloperPlanningPage">
+                    <StoryList/>
+                    <ActiveStory/>
+                </div>
+            </BaseContainer>
         )
     }
 }

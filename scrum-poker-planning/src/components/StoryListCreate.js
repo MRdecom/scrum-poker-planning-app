@@ -5,7 +5,8 @@ export default class StoryListCreate extends React.Component {
     render() {
         return (
             <div className="StoryListCreate">
-                <input type={this.props.inputType}/>
+                <p>Paste your story list (each line will be converted as a story)</p>
+                <textarea name="stories" cols="60" rows="20"/>
             </div>
         );
     }

@@ -28,7 +28,7 @@ export default class ScrumMasterPanel extends React.Component {
                     </tr>
                 </table>
                 <Input labelText='Final Score' inputType='number'/>
-                <button> End Voting For {this.prop.storyName}</button>
+                <button> End Voting For {this.props.storyName}</button>
             </div>
         );
     }

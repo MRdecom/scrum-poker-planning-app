@@ -10,3 +10,9 @@
     background-color: azure;
     height: max-content;
 }
+
+div {
+    border:solid black 1px;
+    margin: 2px;
+}
+
