@@ -15,7 +15,7 @@ export default class Input extends React.Component {
 
     render() {
         return (
-            <div className={Input}>
+            <div className="Input">
                 <label>{this.props.labelText}</label>
                 <input type={this.props.inputType}/>
             </div>
