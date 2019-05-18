@@ -52,6 +52,11 @@ class ScrumMasterPlanningPage extends Component {
     constructor(props) {
         super(props);
     }
+
+    state ={
+        voteEnded: false
+    };
+
     componentDidMount() {
         // getStoryList() her 2 sn de bir güncellenecek.
     }
@@ -63,8 +68,14 @@ class ScrumMasterPlanningPage extends Component {
     sendMyPoint = (point) => {
         console.log(point);
     };
+
     endVoting = (data) => {
+        debugger;
         console.log(data);
+        this.setState({
+            voteEnded: true
+        });
+        //TODO: Server Connection. send vote info to server.
     };
 
     render() {
@@ -73,7 +84,7 @@ class ScrumMasterPlanningPage extends Component {
                 <div className="ScrumMasterPlanningPage">
                     <StoryList storyList={storyListData}/>
                     <ActiveStory storyName='ExampleStory' sendPoint={this.sendMyPoint}/>
-                    <ScrumMasterPanel storyName='ExampleStory' voterInfo={voterInfoList} voteEnded={false} endVoting={this.endVoting} />
+                    <ScrumMasterPanel storyName='ExampleStory' voterInfo={voterInfoList} voteEnded={this.state.voteEnded} endVoting={this.endVoting} />
                 </div>
             </BaseContainer>
         )

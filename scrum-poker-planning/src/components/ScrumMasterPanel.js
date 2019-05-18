@@ -4,6 +4,15 @@ import * as propTypes from 'prop-types';
 import Input from "./Input";
 
 export default class ScrumMasterPanel extends React.Component {
+    constructor(props) {
+        super(props);
+        this.getInputData = this.getInputData.bind(this);
+    }
+
+    state={
+        finalPoint: ''
+    };
+
     static propTypes = {
         storyName: propTypes.string,
         voterInfo: propTypes.array,
@@ -18,13 +27,24 @@ export default class ScrumMasterPanel extends React.Component {
     };
 
     endVoting = () => {
-        const data = 'get data from inputs';
-        this.props.endVoting(data);
-        // statelerden alınacak.
-        // send vote info to server.
-        // voteEnded =  true olacak.
+        if(this.state.finalPoint) {
+            let data = this.state.finalPoint;
+            this.props.endVoting(data);
+            this.clearFinalPoint();
+        }
     };
 
+    getInputData(data) {
+        this.setState({
+            finalPoint: data
+        })
+    }
+
+    clearFinalPoint () {
+        this.setState({
+            finalPoint: ''
+        });
+    }
 
     render() {
         return (
@@ -39,7 +59,7 @@ export default class ScrumMasterPanel extends React.Component {
                     </tr>
                     </thead>
                     <tbody>{
-                        this.props.voterInfo.map((elm,i) => {
+                        this.props.voterInfo.map((elm, i) => {
                             return (
                                 <tr key={i}>
                                     <td>{elm.name}</td>
@@ -50,7 +70,7 @@ export default class ScrumMasterPanel extends React.Component {
                     }</tbody>
 
                 </table>
-                <Input labelText='Final Score' inputType='number'/>
+                <Input labelText='Final Score' inputType='number' getDataFromInput={this.getInputData}/>
                 <button onClick={this.endVoting}> End Voting For {this.props.storyName}</button>
             </div>
         );

@@ -3,6 +3,11 @@ import '../style.css';
 import * as propTypes from 'prop-types';
 
 export default class Input extends React.Component {
+
+    state = {
+        inputValue: undefined
+    };
+
     static propTypes = {
         inputType: propTypes.string,
         labelText: propTypes.string
@@ -13,11 +18,17 @@ export default class Input extends React.Component {
         labelText: 'input name'
     };
 
+    updateInputValue = (e) => {
+        if (!!e.target.value) {
+            this.props.getDataFromInput(e.target.value);
+        }
+    };
+
     render() {
         return (
             <div className="Input">
                 <label>{this.props.labelText}</label>
-                <input type={this.props.inputType}/>
+                <input type={this.props.inputType} onChange={this.updateInputValue}/>
             </div>
         );
     }
