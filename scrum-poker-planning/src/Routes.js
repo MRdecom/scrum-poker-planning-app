@@ -4,15 +4,15 @@ import ScrumMasterPlanningPage from "./pages/ScrumMasterPlanningPage";
 
 export const Routes = [
     {
-        path: '/AddStoryList',
+        path: '/add-story-list',
         component: AddStoryListPage
     },
     {
-        path: '/DeveloperPlanning',
+        path: '/developer-planning',
         component: DeveloperPlanningPage
     },
     {
-        path: '/ScrumMasterPlanning',
+        path: '/scrum-master-planning',
         component: ScrumMasterPlanningPage
     },
     {

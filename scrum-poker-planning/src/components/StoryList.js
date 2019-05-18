@@ -1,6 +1,7 @@
 import React from 'react';
 import '../style.css';
 
+
 export default class StoryList extends React.Component {
 
     render() {
@@ -13,11 +14,18 @@ export default class StoryList extends React.Component {
                         <th>Story Point</th>
                         <th>Status</th>
                     </tr>
-                    <tr>
-                        <td>Red</td>
-                        <td>Yellow</td>
-                        <td>Blue</td>
-                    </tr>
+                    {
+                        this.props.storyList.map((elm) => {
+                            return (
+                            <tr>
+                                <td>{elm.name}</td>
+                                <td>{elm.point}</td>
+                                <td>{elm.status}</td>
+                            </tr>
+                            )
+                        })
+                    }
+
                 </table>
             </div>
         );

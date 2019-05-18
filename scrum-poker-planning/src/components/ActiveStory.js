@@ -22,6 +22,13 @@ export default class ActiveStory extends React.Component {
                     <div className="Block">3</div>
                     <div className="Block">5</div>
                     <div className="Block">8</div>
+                    <div className="Block">13</div>
+                    <div className="Block">21</div>
+                    <div className="Block">34</div>
+                    <div className="Block">55</div>
+                    <div className="Block">59</div>
+                    <div className="Block">134</div>
+                    <div className="Block">?</div>
                 </div>
             </div>
         );

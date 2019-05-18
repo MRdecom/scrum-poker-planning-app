@@ -6,10 +6,14 @@ import Input from "./Input";
 export default class ScrumMasterPanel extends React.Component {
     static propTypes = {
         storyName: propTypes.string,
+        voterInfo: propTypes.object,
+        voteEnded: propTypes.bool,
     };
 
     static defaultProps = {
         storyName: 'storyName',
+        voterInfo: {},
+        voteEnded: false
     };
 
     render() {
@@ -22,10 +26,16 @@ export default class ScrumMasterPanel extends React.Component {
                         <th>Voter</th>
                         <th>Status</th>
                     </tr>
-                    <tr>
-                        <td>Red</td>
-                        <td>Blue</td>
-                    </tr>
+                    {
+                        this.props.voterInfo.map((elm) => {
+                            return (
+                                <tr>
+                                    <td>{elm.name}</td>
+                                    <td>  :  {this.props.voteEnded ? elm.point : elm.status}</td>
+                                </tr>
+                            )
+                        })
+                    }
                 </table>
                 <Input labelText='Final Score' inputType='number'/>
                 <button> End Voting For {this.props.storyName}</button>
