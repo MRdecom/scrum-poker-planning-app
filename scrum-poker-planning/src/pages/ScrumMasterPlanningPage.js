@@ -58,11 +58,14 @@ class ScrumMasterPlanningPage extends Component {
     };
 
     componentDidMount() {
+        // getCurrentStoryInfo
         // getStoryList() her 2 sn de bir güncellenecek.
+        // getVoterInfoList
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         // this.props.votedEnded bilgisi alınacak ve buna göre ScrumMasterPanel güncellenecek.
+        // updateVoterInfoList
     }
 
     sendMyPoint = (point) => {
@@ -70,7 +73,6 @@ class ScrumMasterPlanningPage extends Component {
     };
 
     endVoting = (data) => {
-        debugger;
         console.log(data);
         this.setState({
             voteEnded: true

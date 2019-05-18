@@ -10,7 +10,8 @@ export default class Input extends React.Component {
 
     static propTypes = {
         inputType: propTypes.string,
-        labelText: propTypes.string
+        labelText: propTypes.string,
+        getDataFromInput: propTypes.func
     };
 
     static defaultProps = {
@@ -19,7 +20,7 @@ export default class Input extends React.Component {
     };
 
     updateInputValue = (e) => {
-        if (!!e.target.value) {
+        if (e.target.value) {
             this.props.getDataFromInput(e.target.value);
         }
     };
