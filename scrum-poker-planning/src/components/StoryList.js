@@ -1,8 +1,14 @@
 import React from 'react';
 import '../style.css';
+import * as propTypes from 'prop-types';
 
 
 export default class StoryList extends React.Component {
+
+    static propTypes = {
+        storyList: propTypes.array,
+
+    };
 
     render() {
         return (

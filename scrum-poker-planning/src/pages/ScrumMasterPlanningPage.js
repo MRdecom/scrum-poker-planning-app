@@ -78,12 +78,16 @@ class ScrumMasterPlanningPage extends Component {
         //TODO: Server Connection. send vote info to server.
     };
 
+    getCurrentStoryName = () => {
+        return 'ExampleStory'
+    };
+
     render() {
         return (
             <BaseContainer>
                 <div className="ScrumMasterPlanningPage">
                     <StoryList storyList={storyListData}/>
-                    <ActiveStory storyName='ExampleStory' sendPoint={this.sendMyPoint}/>
+                    <ActiveStory storyName={this.getCurrentStoryName()} sendPoint={this.sendMyPoint}/>
                     <ScrumMasterPanel storyName='ExampleStory' voterInfo={voterInfoList} voteEnded={this.state.voteEnded} endVoting={this.endVoting} />
                 </div>
             </BaseContainer>
