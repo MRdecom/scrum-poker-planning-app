@@ -45,6 +45,27 @@ router.get("/getData", (req, res) => {
         return res.json({success: true, data: data});
     });
 });
+router.get("/getSprintData", (req, res) => {
+    SprintData.find((err, data) => {
+        if (err) return res.json({success: false, error: err});
+        return res.json({success: true, data: data});
+    });
+});
+router.get("/getStoryData", (req, res) => {
+    StoriesData.find((err, data) => {
+        if (err) return res.json({success: false, error: err});
+        return res.json({success: true, data: data});
+    });
+});
+router.get("/getVoterData", (req, res) => {
+    VotersData.find((err, data) => {
+        if (err) return res.json({success: false, error: err});
+        return res.json({success: true, data: data});
+    });
+});
+
+
+
 
 // this is our update method
 // this method overwrites existing data in our database
@@ -56,6 +77,12 @@ router.post("/updateData", (req, res) => {
     });
 });
 
+
+
+
+
+
+
 // this is our delete method
 // this method removes existing data in our database
 router.delete("/deleteData", (req, res) => {
@@ -65,6 +92,13 @@ router.delete("/deleteData", (req, res) => {
         return res.json({success: true});
     });
 });
+
+
+
+
+
+
+
 
 // this is our create methid
 // this method adds new data in our database
@@ -86,7 +120,6 @@ router.post("/putData", (req, res) => {
         return res.json({success: true});
     });
 });
-
 router.post("/CreateSession", (req, res) => {
     let data = new SprintData();
 

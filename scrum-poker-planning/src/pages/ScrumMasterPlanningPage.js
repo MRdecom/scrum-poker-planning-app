@@ -81,12 +81,35 @@ class ScrumMasterPlanningPage extends Component {
         // getCurrentStoryInfo
         // getStoryList() her 2 sn de bir güncellenecek.
         // getVoterInfoList
+        const sprintData =  this.getSprintDataFromDb();
+        const storyData =  this.getStoryDataFromDb();
+        const voterData =  this.getVoterDataFromDb();
+
+        debugger;
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         // this.props.votedEnded bilgisi alınacak ve buna göre ScrumMasterPanel güncellenecek.
         // updateVoterInfoList
     }
+
+    getSprintDataFromDb = () => {
+        fetch("http://localhost:3001/api/getSprintData")
+            .then(data => data.json())
+            .then(res => this.setState({data: res.data}));
+    };
+
+    getStoryDataFromDb = () => {
+        fetch("http://localhost:3001/api/getStoryData")
+            .then(data => data.json())
+            .then(res => this.setState({data: res.data}));
+    };
+
+    getVoterDataFromDb = () => {
+        fetch("http://localhost:3001/api/getVoterData")
+            .then(data => data.json())
+            .then(res => this.setState({data: res.data}));
+    };
 
     sendMyPoint = (point) => {
         console.log(point);

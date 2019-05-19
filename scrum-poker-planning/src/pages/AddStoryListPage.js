@@ -125,12 +125,12 @@ class AddStoryListPage extends Component {
             this.createSessionReq(this.state.sessionName);
 
             const votersReq  = this.prepareVotersData();
-            debugger;
             votersReq.forEach((el,i)=> {
                 this.createVotersReq(el,i);
             });
             const storyReq = this.prepareStories();
             storyReq.forEach((el,i)=>{
+                debugger;
                 this.createStoryReq(el,i);
             });
 

@@ -49,6 +49,33 @@ const storyListData = [{
 
 class DeveloperPlanningPage extends Component {
 
+    componentDidMount() {
+        const sprintData =  this.getSprintDataFromDb();
+        const storyData =  this.getStoryDataFromDb();
+        const voterData =  this.getVoterDataFromDb();
+
+        debugger;
+    }
+
+
+    getSprintDataFromDb = () => {
+        fetch("http://localhost:3001/api/getSprintData")
+            .then(data => data.json())
+            .then(res => this.setState({data: res.data}));
+    };
+
+    getStoryDataFromDb = () => {
+        fetch("http://localhost:3001/api/getStoryData")
+            .then(data => data.json())
+            .then(res => this.setState({data: res.data}));
+    };
+
+    getVoterDataFromDb = () => {
+        fetch("http://localhost:3001/api/getVoterData")
+            .then(data => data.json())
+            .then(res => this.setState({data: res.data}));
+    };
+
     getCurrentStoryName = () => {
         return 'ExampleStory'
     };
