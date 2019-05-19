@@ -49,15 +49,9 @@ export default class ScrumMasterPanel extends React.Component {
     render() {
         return (
             <div className="ScrumMasterPanel">
-                <p>scrum master panel</p>
+                <p className="PanelName">Scrum Master Panel</p>
                 <p>{this.props.storyName} is active</p>
                 <table>
-                    <thead>
-                    <tr>
-                        <th>Voter</th>
-                        <th>Status</th>
-                    </tr>
-                    </thead>
                     <tbody>{
                         this.props.voterInfo.map((elm, i) => {
                             return (
@@ -70,8 +64,11 @@ export default class ScrumMasterPanel extends React.Component {
                     }</tbody>
 
                 </table>
-                <Input labelText='Final Score' inputType='number' getDataFromInput={this.getInputData}/>
-                <button onClick={this.endVoting}> End Voting For {this.props.storyName}</button>
+                <div className="FinalScoreBlock">
+                    <Input labelText='Final Score' inputType='number' getDataFromInput={this.getInputData}/>
+                    <div className="FinalScoreButton" onClick={this.endVoting}> End Voting For {this.props.storyName}</div>
+                </div>
+
             </div>
         );
     }

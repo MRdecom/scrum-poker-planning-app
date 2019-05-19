@@ -1,18 +1,209 @@
+.App {
+    margin: 5%;
+}
+
 .Logo {
     font-size: xx-large;
-    color: darkblue;
-    inline-size: min-content;
-    text-decoration: none;
-    padding: 5% 5% 5% 5%;
+    color: darkslategray;
+    font-weight: bold;
+    height: 120px;
+    width: 120px;
+    background: #5bb0ff;
+    border: none;
+}
+
+.Logo div {
+    background: white;
+    border-radius: 10px;
+    height: 90%;
+    border: none;
+    margin: 0 6px 0 6px;
+    width: 90%;
+    position: relative;
+    top: 5%;
+    text-align: center;
+
+}
+
+.Logo div p {
+    position: relative;
+    top: 15%;
 }
 
 .BaseContainer {
-    background-color: azure;
     height: max-content;
 }
 
-div {
-    border:solid black 1px;
-    margin: 2px;
+
+.InputBlock {
+    display: flex;
 }
 
+.Input {
+    height: 25px;
+    width: 50%;
+}
+
+.Input label {
+    font-size: larger;
+    display: inline-block;
+}
+
+.Input input {
+    width: 60%;
+    float: right;
+    margin: 2px 2% 0 0;
+    border: solid darkblue 2px;
+    display: inline-block;
+}
+
+.AddStoryListPage {
+
+}
+
+.AddStoryListPage textarea {
+    width: 98%;
+    margin: -14px 0 0 6px;
+}
+
+.AddStoryListPage p {
+
+}
+
+.StartSessionButton {
+    float: right;
+    height: 45px;
+    width: 160px;
+    margin: 20px 8px 0 0;
+    box-shadow: 2px 2px;
+    border: darkslategray solid 2px;
+    text-align: center;
+}
+
+.StoryList {
+    width: 40%;
+    float: left;
+    min-height: 550px;
+    border: black solid 2px;
+    height: 550px;
+    overflow-y: scroll;
+}
+
+.StoryList table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.StoryList table th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.StoryList table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: gray;
+    color: white;
+}
+
+.StoryList table tr:nth-child(even) {
+    background-color: lightblue;
+}
+
+.ActiveStory {
+    display: inline-block;
+    width: 26%;
+    margin-left: 1%;
+    min-height: 500px;
+    text-align: center;
+}
+
+.ActiveStory .Block {
+    width: 50px;
+    height: 50px;
+    display: inline-table;
+    margin: 26px;
+    text-align: center;
+    border: darkgray solid 3px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.ActiveStory .GreenBlock {
+    border: darkgreen solid 3px;
+}
+
+.ActiveStory label {
+    top: -8px;
+    left: -154px;
+    background: white;
+    z-index: 1;
+    position: relative;
+}
+
+.PointBlock {
+    position: relative;
+    top: -20px;
+    border: black solid 2px;
+    min-height: 500px;
+
+}
+
+.ScrumMasterPlanningPage {
+    display: flex;
+}
+
+.ScrumMasterPanel {
+    height: 500px;
+    width: 25%;
+    margin-top: 48px;
+    margin-left: 3%;
+    border: black solid 2px;
+}
+
+.PanelName {
+    top: -24px;
+    left: 20px;
+    background: white;
+    z-index: 1;
+    position: relative;
+    width: 150px;
+}
+
+.ActiveStoryTitle {
+    margin-left: -343px;
+}
+
+.FinalScoreBlock {
+    text-align: -webkit-center;
+}
+
+.FinalScoreBlock label {
+    font-size: small;
+    display: block;
+}
+
+.FinalScoreBlock input {
+    width: 90px;
+    position: relative;
+    left: -50px;
+}
+
+.FinalScoreButton {
+    box-shadow: 2px 2px;
+    border: darkslategray solid 2px;
+    text-align: center;
+    margin-top: 20px;
+    width: 65%;
+    cursor: pointer;
+}
+
+.DeveloperPlanningPage .StoryList {
+    width: 65%;
+}
+
+.VoteInfoBlock {
+    position: relative;
+    top: -170px;
+}

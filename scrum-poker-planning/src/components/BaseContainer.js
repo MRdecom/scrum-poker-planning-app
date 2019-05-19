@@ -7,13 +7,10 @@ export default class BaseContainer extends React.Component {
     render() {
         return (
             <main className='BaseContainer'>
-                <div className='Logo'>
                     <Logo/>
-                    <Link to='/'>Home</Link> <br/>
-                    <Link to='/scrum-master-planning'>ScrumM</Link><br/>
-                    <Link to='/developer-planning' >Dev</Link>
-
-                </div>
+                <Link to='/'>Home</Link> <br/>
+                <Link to='/scrum-master-planning'>ScrumM</Link><br/>
+                <Link to='/developer-planning' >Dev</Link>
                 <div className='BaseContainer-Body'>
                     {this.props.children}
                 </div>
