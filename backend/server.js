@@ -130,15 +130,15 @@ router.post("/CreateStories", (req, res) => {
 router.post("/CreateVoters", (req, res) => {
     let data = new VotersData();
 
-    const {id, message} = req.body;
+    const {id, score} = req.body;
 
-    if ((!id && id !== 0) || !message) {
+    if ((!id && id !== 0) || !score) {
         return res.json({
             success: false,
             error: "INVALID INPUTS"
         });
     }
-    data.score = message;
+    data.score = score;
     data.id = id;
     data.save(err => {
         if (err) return res.json({success: false, error: err});

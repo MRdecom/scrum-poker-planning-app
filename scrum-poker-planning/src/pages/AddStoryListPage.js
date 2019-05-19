@@ -66,21 +66,13 @@ class AddStoryListPage extends Component {
         axios.post("http://localhost:3001/api/CreateSession", {
             id: idToBeAdded,
             sprintName: name
-        }).then(resp => {
-            const votersReq  = this.prepareVotersData();
-            this.createVotersReq(votersReq[0].score);
-
-            const storyReq = this.prepareStories();
-            this.createStoryReq(storyReq[0],13);
-            debugger;
-            this.setState({redirect: true});
         });
     };
 
-    createStoryReq = (dt) => {
+    createStoryReq = (dt,i) => {
 
         axios.post("http://localhost:3001/api/CreateStories", {
-            id: 12,
+            id: i,
             storyName: dt.storyName,
             status: dt.status,
             finalScore: dt.finalScore,
@@ -88,16 +80,10 @@ class AddStoryListPage extends Component {
         });
     };
 
-    createVotersReq = (message) => {
-        let currentIds = this.state.data.map(data => data.id);
-        let idToBeAdded = 0;
-        while (currentIds.includes(idToBeAdded)) {
-            ++idToBeAdded;
-        }
-
+    createVotersReq = (scr,i) => {
         axios.post("http://localhost:3001/api/CreateVoters", {
-            id: idToBeAdded,
-            message: message
+            id: i,
+            score: scr
         });
     };
 
@@ -137,14 +123,26 @@ class AddStoryListPage extends Component {
             console.log('startSesssion');
 
             this.createSessionReq(this.state.sessionName);
+
+            const votersReq  = this.prepareVotersData();
+            debugger;
+            votersReq.forEach((el,i)=> {
+                this.createVotersReq(el,i);
+            });
+            const storyReq = this.prepareStories();
+            storyReq.forEach((el,i)=>{
+                this.createStoryReq(el,i);
+            });
+
+
+            this.setState({redirect: true});
         }
     };
     prepareVotersData = () => {
         let votersData=[];
         for(let i = 0; i<this.state.numberOfVoters; i++) {
-            votersData.push({voterId:i,score:'0'})
+            votersData.push('0')
         }
-        debugger;
         return votersData;
     };
     prepareStories = () => {
