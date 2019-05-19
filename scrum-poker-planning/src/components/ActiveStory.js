@@ -19,12 +19,20 @@ export default class ActiveStory extends React.Component {
         storyName: 'storyName',
     };
 
-    sendPoint(point) {
+    sendPoint(point,i) {
         this.props.sendPoint(point);
         this.setState({
-            info: point + ' Voted'
+            info: point + ' Voted',
+            selectedItem: i
         });
+
+        this.setState({ selectedItem: i })
     };
+
+    changeMyCssClass (i){
+        const isItemSelected = this.state.selectedItem === i;
+        return isItemSelected ? "Block GreenBlock" : "Block"
+    }
 
     render() {
         return (
@@ -34,7 +42,8 @@ export default class ActiveStory extends React.Component {
                 <div className="PointBlock">
                     {listOfValues.map((elm, i) => {
                         return (
-                            <div key={i} onClick={this.sendPoint.bind(this, elm)} className="Block">
+                            <div key={i} onClick={this.sendPoint.bind(this, elm,i)}
+                                 className={this.changeMyCssClass(i)}>
                                 <p>{elm}</p>
                             </div>
                         )

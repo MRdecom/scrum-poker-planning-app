@@ -84,19 +84,19 @@
     width: 40%;
     float: left;
     min-height: 550px;
-    border: black solid 2px;
     height: 550px;
-    overflow-y: scroll;
 }
 
 .StoryList table {
     border-collapse: collapse;
     width: 100%;
+    border: black solid 2px;
+    min-height: 500px;
 }
 
 .StoryList table th, td {
-    border: 1px solid #ddd;
     padding: 8px;
+    border-right: 1px solid black
 }
 
 .StoryList table th {

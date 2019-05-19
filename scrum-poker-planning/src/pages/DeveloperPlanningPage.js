@@ -13,6 +13,26 @@ const storyListData = [{
     'point': '124',
     'status': 'voted'
 }, {
+    'name': 'Story2',
+    'point': '124',
+    'status': 'voted'
+}, {
+    'name': 'Story2',
+    'point': '124',
+    'status': 'voted'
+}, {
+    'name': 'Story2',
+    'point': '124',
+    'status': 'voted'
+}, {
+    'name': 'Story2',
+    'point': '124',
+    'status': 'voted'
+}, {
+    'name': 'Story2',
+    'point': '124',
+    'status': 'voted'
+}, {
     'name': 'Story3',
     'point': '',
     'status': 'Active'
