@@ -6,10 +6,6 @@ import ScrumMasterPanel from "../components/ScrumMasterPanel";
 import BaseContainer from "../components/BaseContainer";
 
 class ScrumMasterPlanningPage extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     state = {
         voteEnded: false,
         sprintData: undefined,
