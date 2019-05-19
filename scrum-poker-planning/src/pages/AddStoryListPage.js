@@ -12,9 +12,9 @@ class AddStoryListPage extends Component {
         numberOfVoters: 0,
         textAreaVal: '',
         redirect: false,
-        sprintId:0,
-        storyId:0,
-        currentStoryId:0,
+        sprintId: 0,
+        storyId: 0,
+        currentStoryId: 0,
 
         data: [],
         id: 0,
@@ -26,7 +26,9 @@ class AddStoryListPage extends Component {
     };
 
     componentDidMount() {
-
+        this.deleteSprintFromDB();
+        this.deleteStoryFromDB();
+        this.deleteVotersFromDB();
     }
 
     componentWillUnmount() {
@@ -38,6 +40,7 @@ class AddStoryListPage extends Component {
             .then(data => data.json())
             .then(res => this.setState({data: res.data}));
     };
+
 
     putDataToDB = message => {
         let currentIds = this.state.data.map(data => data.id);
@@ -51,7 +54,6 @@ class AddStoryListPage extends Component {
             message: message
         });
     };
-
     createSessionReq = (name) => {
         let currentIds = this.state.data.map(data => data.id);
         let idToBeAdded = 0;
@@ -68,8 +70,7 @@ class AddStoryListPage extends Component {
             sprintName: name
         });
     };
-
-    createStoryReq = (dt,i) => {
+    createStoryReq = (dt, i) => {
 
         axios.post("http://localhost:3001/api/CreateStories", {
             id: i,
@@ -79,8 +80,7 @@ class AddStoryListPage extends Component {
             sprintId: dt.sprintId
         });
     };
-
-    createVotersReq = (scr,i) => {
+    createVotersReq = (scr, i) => {
         axios.post("http://localhost:3001/api/CreateVoters", {
             id: i,
             score: scr
@@ -101,6 +101,16 @@ class AddStoryListPage extends Component {
             }
         });
     };
+    deleteSprintFromDB = () => {
+        axios.delete("http://localhost:3001/api/DeleteSprintData",);
+    };
+    deleteStoryFromDB = () => {
+        axios.delete("http://localhost:3001/api/DeleteStoryData",);
+    };
+    deleteVotersFromDB = () => {
+        axios.delete("http://localhost:3001/api/DeleteVotersData",);
+    };
+
 
     updateDB = (idToUpdate, updateToApply) => {
         let objIdToUpdate = null;
@@ -124,14 +134,14 @@ class AddStoryListPage extends Component {
 
             this.createSessionReq(this.state.sessionName);
 
-            const votersReq  = this.prepareVotersData();
-            votersReq.forEach((el,i)=> {
-                this.createVotersReq(el,i);
+            const votersReq = this.prepareVotersData();
+            votersReq.forEach((el, i) => {
+                this.createVotersReq(el, i);
             });
             const storyReq = this.prepareStories();
-            storyReq.forEach((el,i)=>{
+            storyReq.forEach((el, i) => {
                 debugger;
-                this.createStoryReq(el,i);
+                this.createStoryReq(el, i);
             });
 
 
@@ -139,8 +149,8 @@ class AddStoryListPage extends Component {
         }
     };
     prepareVotersData = () => {
-        let votersData=[];
-        for(let i = 0; i<this.state.numberOfVoters; i++) {
+        let votersData = [];
+        for (let i = 0; i < this.state.numberOfVoters; i++) {
             votersData.push('0')
         }
         return votersData;

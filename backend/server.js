@@ -86,8 +86,25 @@ router.post("/updateData", (req, res) => {
 // this is our delete method
 // this method removes existing data in our database
 router.delete("/deleteData", (req, res) => {
-    const {id} = req.body;
-    Data.findOneAndDelete(id, err => {
+    Data.remove( err => {
+        if (err) return res.send(err);
+        return res.json({success: true});
+    });
+});
+router.delete("/DeleteSprintData", (req, res) => {
+    SprintData.remove( err => {
+        if (err) return res.send(err);
+        return res.json({success: true});
+    });
+});
+router.delete("/DeleteStoryData", (req, res) => {
+    StoriesData.remove( err => {
+        if (err) return res.send(err);
+        return res.json({success: true});
+    });
+});
+router.delete("/DeleteVotersData", (req, res) => {
+    VotersData.remove( err => {
         if (err) return res.send(err);
         return res.json({success: true});
     });
