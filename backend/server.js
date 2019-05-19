@@ -4,6 +4,8 @@ var cors = require('cors');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const Data = require('./data');
+
+
 const SprintData = require('./sprint-data');
 const StoriesData = require('./stories-data');
 const VotersData = require('./voters-data');
@@ -106,47 +108,41 @@ router.post("/CreateSession", (req, res) => {
 router.post("/CreateStories", (req, res) => {
     let data = new StoriesData();
 
-    const {id, storyName, status, score, sprintId} = req.body;
+    const {id, storyName, status, finalScore, sprintId} = req.body;
     if ((!id && id !== 0)) {
         return res.json({
             success: false,
             error: "INVALID INPUTS"
         });
     }
-       data.storyName = storyName;
-       data.status = status;
-       data.score = score;
-       data.sprintId = sprintId;
-       data.id = id;
+
+    data.id = id;
+    data.sprintId = sprintId;
+    data.storyName = storyName;
+    data.status = status;
+    data.finalScore = finalScore;
 
     data.save(err => {
         if (err) return res.json({success: false, error: err});
-        return res.json({
-            success: true,
-            resp: res
-        });
+        return res.json({success: true});
     });
 });
 router.post("/CreateVoters", (req, res) => {
     let data = new VotersData();
 
-    const {id, score} = req.body;
-    if ((!id && id !== 0)) {
+    const {id, message} = req.body;
+
+    if ((!id && id !== 0) || !message) {
         return res.json({
             success: false,
             error: "INVALID INPUTS"
         });
     }
-
-    data.score = score;
+    data.score = message;
     data.id = id;
-
     data.save(err => {
         if (err) return res.json({success: false, error: err});
-        return res.json({
-            success: true,
-            resp: res
-        });
+        return res.json({success: true});
     });
 });
 

@@ -12,6 +12,9 @@ class AddStoryListPage extends Component {
         numberOfVoters: 0,
         textAreaVal: '',
         redirect: false,
+        sprintId:0,
+        storyId:0,
+        currentStoryId:0,
 
         data: [],
         id: 0,
@@ -23,18 +26,11 @@ class AddStoryListPage extends Component {
     };
 
     componentDidMount() {
-        this.getDataFromDb();
-        if (!this.state.intervalIsSet) {
-            let interval = setInterval(this.getDataFromDb, 100000);
-            this.setState({intervalIsSet: interval});
-        }
+
     }
 
     componentWillUnmount() {
-        if (this.state.intervalIsSet) {
-            clearInterval(this.state.intervalIsSet);
-            this.setState({intervalIsSet: null});
-        }
+
     }
 
     getDataFromDb = () => {
@@ -55,7 +51,8 @@ class AddStoryListPage extends Component {
             message: message
         });
     };
-    createSessionReq = name => {
+
+    createSessionReq = (name) => {
         let currentIds = this.state.data.map(data => data.id);
         let idToBeAdded = 0;
         while (currentIds.includes(idToBeAdded)) {
@@ -70,41 +67,37 @@ class AddStoryListPage extends Component {
             id: idToBeAdded,
             sprintName: name
         }).then(resp => {
+            const votersReq  = this.prepareVotersData();
+            this.createVotersReq(votersReq[0].score);
+
             const storyReq = this.prepareStories();
-            storyReq.forEach(item => {
-                this.createStoryReq(item);
-            });
-
+            this.createStoryReq(storyReq[0],13);
             debugger;
-            // this.createVotersReq();
-
+            this.setState({redirect: true});
         });
     };
 
     createStoryReq = (dt) => {
-        let currentIds = this.state.data.map(data => data.id);
-        let idToBeAdded = 0;
-        while (currentIds.includes(idToBeAdded)) {
-            ++idToBeAdded;
-        }
+
         axios.post("http://localhost:3001/api/CreateStories", {
-            id: idToBeAdded,
+            id: 12,
             storyName: dt.storyName,
             status: dt.status,
-            score: dt.score,
+            finalScore: dt.finalScore,
             sprintId: dt.sprintId
         });
     };
 
-    createVotersReq = (req) => {
+    createVotersReq = (message) => {
         let currentIds = this.state.data.map(data => data.id);
         let idToBeAdded = 0;
         while (currentIds.includes(idToBeAdded)) {
             ++idToBeAdded;
         }
-        axios.post("http://localhost:3001/api/VotersStories", {
+
+        axios.post("http://localhost:3001/api/CreateVoters", {
             id: idToBeAdded,
-            score: req.score
+            message: message
         });
     };
 
@@ -142,11 +135,18 @@ class AddStoryListPage extends Component {
             // session baslatılacak.
             // bilgiler gönderilecek.
             console.log('startSesssion');
-            this.setState({redirect: true});
+
             this.createSessionReq(this.state.sessionName);
         }
     };
-
+    prepareVotersData = () => {
+        let votersData=[];
+        for(let i = 0; i<this.state.numberOfVoters; i++) {
+            votersData.push({voterId:i,score:'0'})
+        }
+        debugger;
+        return votersData;
+    };
     prepareStories = () => {
         const data = this.state.textAreaVal.split('\n').filter((a) => {
             return a !== ''
@@ -155,7 +155,7 @@ class AddStoryListPage extends Component {
             return {
                 storyName: st,
                 status: 'Not Voted',
-                score: '',
+                finalScore: '0',
                 sprintId: this.state.sprintId
             }
         });

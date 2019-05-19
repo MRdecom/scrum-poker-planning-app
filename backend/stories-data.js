@@ -7,7 +7,7 @@ const StoriesDataSchema = new Schema(
         sprintId: Number,
         storyName: String,
         status: String,
-        finalScore: Number
+        finalScore: String
     },
     { timestamps: true }
 );
