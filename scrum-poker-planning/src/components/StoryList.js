@@ -32,7 +32,7 @@ export default class StoryList extends React.Component {
                             return (
                                 <tr key={i}>
                                     <td>{elm.storyName}</td>
-                                    <td>{elm.finalScore === '0' ? '' : elm.finalScore}</td>
+                                    <td>{(elm.finalScore === '0' || elm.status !== 'Voted') ? '' : elm.finalScore}</td>
                                     <td>{elm.status}</td>
                                 </tr>
                             )

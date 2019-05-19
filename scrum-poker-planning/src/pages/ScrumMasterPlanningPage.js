@@ -4,25 +4,30 @@ import StoryList from "../components/StoryList";
 import ActiveStory from "../components/ActiveStory";
 import ScrumMasterPanel from "../components/ScrumMasterPanel";
 import BaseContainer from "../components/BaseContainer";
+import axios from "axios";
 
 class ScrumMasterPlanningPage extends Component {
     state = {
         voteEnded: false,
         sprintData: undefined,
         storyData: undefined,
-        voterData: undefined
+        voterData: undefined,
+        activeStoryId: undefined
     };
 
-    componentDidMount() {
+    async componentDidMount() {
         // getCurrentStoryInfo
         // getStoryList() her 2 sn de bir güncellenecek.
         // getVoterInfoList
-        // TODO: this.setActiveStory(id);
+        await this.storyActivateById(0);
+
+
         this.getSprintDataFromDb();
         this.getStoryDataFromDb();
         this.getVoterDataFromDb();
-    }
 
+
+    }
     componentDidUpdate(prevProps, prevState, snapshot) {
         // this.props.votedEnded bilgisi alınacak ve buna göre ScrumMasterPanel güncellenecek.
         // updateVoterInfoList
@@ -49,7 +54,6 @@ class ScrumMasterPlanningPage extends Component {
                 }
             );
     };
-
     getStoryDataFromDb = () => {
         fetch("http://localhost:3001/api/getStoryData")
             .then(data => data.json())
@@ -71,7 +75,6 @@ class ScrumMasterPlanningPage extends Component {
                 }
             );
     };
-
     getVoterDataFromDb = () => {
         fetch("http://localhost:3001/api/getVoterData")
             .then(data => data.json())
@@ -90,21 +93,58 @@ class ScrumMasterPlanningPage extends Component {
             );
     };
 
+
     sendMyPoint = (point) => {
         console.log(point);
     };
 
+
     endVoting = (data) => {
-        console.log(data);
-        this.setState({
-            voteEnded: true
+        const _id = this.getActiveStoryId();
+        axios.post("http://localhost:3001/api/SendFinalScore", {
+            id: _id,
+            finalScore: data
+        }).then(async () => {
+            this.setState({
+                voteEnded: true
+            });
+            const currentId = this.getActiveStoryId();
+            await this.updateToVotedStory(currentId);
+            await this.storyActivateById(currentId+1);
+            await this.getStoryDataFromDb();
         });
-        //TODO: Server Connection. send vote info to server.
     };
 
-    getCurrentStoryName = () => {
-        if(!this.state.storyData) return '';
-        return this.state.storyData.find((elm) => { return elm.status === 'Active'}).storyName;
+    storyActivateById = (idToUpdate) => {
+        axios.post("http://localhost:3001/api/StoryActivateById", {
+            id: idToUpdate,
+            status:'Active'
+        }).then(() => {
+            this.getStoryDataFromDb();
+        });
+    };
+    updateToVotedStory = (idToUpdate) => {
+        axios.post("http://localhost:3001/api/UpdateToVotedStory", {
+            id: idToUpdate,
+            status: 'Voted'
+        }).then(() => {
+            this.getStoryDataFromDb();
+        });
+    };
+
+
+    getActiveStoryName = () => {
+        if (!this.state.storyData) return '';
+        const item = this.state.storyData.find((elm) => {
+            return elm.status === 'Active'
+        });
+        return item ? item.storyName : '';
+    };
+    getActiveStoryId = () => {
+        if (!this.state.storyData) return 0;
+        return this.state.storyData.find((elm) => {
+            return elm.status === 'Active'
+        }).id;
     };
 
     render() {
@@ -112,8 +152,8 @@ class ScrumMasterPlanningPage extends Component {
             <BaseContainer>
                 <div className="ScrumMasterPlanningPage">
                     <StoryList storyList={this.state.storyData}/>
-                    <ActiveStory storyName={this.getCurrentStoryName()} sendPoint={this.sendMyPoint}/>
-                    <ScrumMasterPanel storyName={this.getCurrentStoryName()} voterInfo={this.state.voterData}
+                    <ActiveStory storyName={this.getActiveStoryName()} sendPoint={this.sendMyPoint}/>
+                    <ScrumMasterPanel storyName={this.getActiveStoryName()} voterInfo={this.state.voterData}
                                       voteEnded={this.state.voteEnded} endVoting={this.endVoting}/>
                 </div>
             </BaseContainer>

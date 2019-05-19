@@ -29,9 +29,6 @@ class AddStoryListPage extends Component {
         this.deleteSprintFromDB();
         this.deleteStoryFromDB();
         this.deleteVotersFromDB();
-    }
-
-    componentWillUnmount() {
 
     }
 
@@ -69,12 +66,11 @@ class AddStoryListPage extends Component {
             id: idToBeAdded,
             sprintName: name
         })
-            .then(()=> {
-            this.setState({redirect: true});
-        });
+            .then(() => {
+                this.setState({redirect: true});
+            });
     };
     createStoryReq = (dt, i) => {
-
         axios.post("http://localhost:3001/api/CreateStories", {
             id: i,
             storyName: dt.storyName,
@@ -83,6 +79,7 @@ class AddStoryListPage extends Component {
             sprintId: dt.sprintId
         });
     };
+
     createVotersReq = (scr, i) => {
         axios.post("http://localhost:3001/api/CreateVoters", {
             id: i,
@@ -114,9 +111,8 @@ class AddStoryListPage extends Component {
         axios.delete("http://localhost:3001/api/DeleteVotersData",);
     };
 
-
     updateDB = (idToUpdate, updateToApply) => {
-        let objIdToUpdate = null;
+        let objIdToUpdate = idToUpdate;
         this.state.data.forEach(dat => {
             if (dat.id === idToUpdate) {
                 objIdToUpdate = dat._id;
@@ -125,16 +121,16 @@ class AddStoryListPage extends Component {
 
         axios.post("http://localhost:3001/api/updateData", {
             id: objIdToUpdate,
-            update: {message: updateToApply}
+            update: updateToApply
         });
     };
 
-    startSession = () => {
+    startSession =async () => {
         if (this.state.numberOfVoters !== '0' && this.state.sessionName !== '' && this.state.textAreaVal !== '') {
 
             console.log('startSesssion');
 
-            this.createSessionReq(this.state.sessionName);
+            await this.createSessionReq(this.state.sessionName);
 
             const votersReq = this.prepareVotersData();
             votersReq.forEach((el, i) => {
@@ -148,7 +144,7 @@ class AddStoryListPage extends Component {
     };
     prepareVotersData = () => {
         let votersData = [];
-        for (let i = 0; i < this.state.numberOfVoters-1; i++) {
+        for (let i = 0; i < this.state.numberOfVoters - 1; i++) {
             votersData.push('0')
         }
         return votersData;

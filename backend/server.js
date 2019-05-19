@@ -70,13 +70,44 @@ router.get("/getVoterData", (req, res) => {
 // this is our update method
 // this method overwrites existing data in our database
 router.post("/updateData", (req, res) => {
-    const {id, update} = req.body;
-    Data.findOneAndUpdate(id, update, err => {
+    const { id, update } = req.body;
+    Data.findOneAndUpdate({id: id},{$set:{message:update}}, err => {
+        if (err) return res.json({ success: false, error: err });
+        return res.json({ success: true });
+    });
+});
+
+
+router.post("/StoryActivateById", (req, res) => {
+    const {id, status} = req.body;
+    console.log('StoryActivateById');
+    StoriesData.findOneAndUpdate({id: id},{status:status}, err => {
         if (err) return res.json({success: false, error: err});
         return res.json({success: true});
     });
 });
 
+
+router.post("/SendFinalScore", (req, res) => {
+    console.log('SendFinalScore');
+    const {id, finalScore} = req.body;
+    StoriesData.findOneAndUpdate({id: id},{$set:{finalScore:finalScore}}, err => {
+        if (err) return res.json({success: false, error: err});
+        return res.json({success: true});
+    });
+});
+
+router.post("/UpdateToVotedStory", (req, res) => {
+    console.log('UpdateToVotedStory');
+    const {id, status} = req.body;
+    StoriesData.findOneAndUpdate({id: id},{$set:{status:status}}, err => {
+        if (err) return res.json({success: false, error: err});
+        return res.json({success: true});
+    });
+});
+
+
+// {id: id},{$set:{message:update}}
 
 
 
