@@ -6,15 +6,20 @@ import * as propTypes from 'prop-types';
 export default class StoryList extends React.Component {
 
     static propTypes = {
-        storyList: propTypes.array,
+        storyList: propTypes.array
+    };
 
+    static defaultProps = {
+        storyList: undefined
     };
 
     render() {
+        const {storyList} = this.props;
         return (
             <div className="StoryList">
                 <p>StoryList</p>
-                <table>
+                {storyList &&
+                    <table>
                     <thead>
                     <tr>
                         <th>Story</th>
@@ -23,19 +28,17 @@ export default class StoryList extends React.Component {
                     </tr>
                     </thead>
                     <tbody>{
-                        this.props.storyList.map((elm,i) => {
+                        storyList.map((elm,i) => {
                             return (
                                 <tr key={i}>
-                                    <td>{elm.name}</td>
-                                    <td>{elm.point}</td>
+                                    <td>{elm.storyName}</td>
+                                    <td>{elm.finalScore === '0' ? '' : elm.finalScore}</td>
                                     <td>{elm.status}</td>
                                 </tr>
                             )
                         })
                     }</tbody>
-
-
-                </table>
+                </table>}
             </div>
         );
     }

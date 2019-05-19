@@ -111,12 +111,6 @@ router.delete("/DeleteVotersData", (req, res) => {
 });
 
 
-
-
-
-
-
-
 // this is our create methid
 // this method adds new data in our database
 router.post("/putData", (req, res) => {

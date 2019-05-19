@@ -9,8 +9,9 @@ export default class ScrumMasterPanel extends React.Component {
         this.getInputData = this.getInputData.bind(this);
     }
 
-    state={
-        finalPoint: ''
+    state = {
+        finalPoint: '',
+        masterScore: '0'
     };
 
     static propTypes = {
@@ -21,13 +22,13 @@ export default class ScrumMasterPanel extends React.Component {
     };
 
     static defaultProps = {
-        storyName: 'storyName',
-        voterInfo: {},
-        voteEnded: false
+        voterInfo: undefined,
+        voteEnded: false,
+        storyName: ''
     };
 
     endVoting = () => {
-        if(this.state.finalPoint) {
+        if (this.state.finalPoint) {
             let data = this.state.finalPoint;
             this.props.endVoting(data);
             this.clearFinalPoint();
@@ -40,33 +41,51 @@ export default class ScrumMasterPanel extends React.Component {
         })
     }
 
-    clearFinalPoint () {
+    clearFinalPoint() {
         this.setState({
             finalPoint: ''
         });
     }
 
     render() {
+        const {voterInfo} = this.props;
         return (
             <div className="ScrumMasterPanel">
                 <p className="PanelName">Scrum Master Panel</p>
                 <p>{this.props.storyName} is active</p>
+                {voterInfo &&
                 <table>
                     <tbody>{
-                        this.props.voterInfo.map((elm, i) => {
+                        voterInfo.map((elm, i) => {
                             return (
                                 <tr key={i}>
-                                    <td>{elm.name}</td>
-                                    <td> : {this.props.voteEnded ? elm.point : elm.status}</td>
+                                    <td>Voter {i}</td>
+                                    <td> : {this.props.voteEnded
+                                        ? elm.score
+                                        : (elm.score !== '0'
+                                            ? elm.score
+                                            : 'Not Voted')}</td>
                                 </tr>
                             )
                         })
-                    }</tbody>
+                    }
+                    <tr>
+                        <td>Scrum Master</td>
+                        <td> : {this.props.voteEnded
+                            ? this.state.masterScore
+                            : (this.state.masterScore !== '0'
+                                ? this.state.masterScore
+                                : 'Not Voted')}
+                        </td>
+                    </tr>
+                    </tbody>
 
-                </table>
+                </table>}
+
                 <div className="FinalScoreBlock">
                     <Input labelText='Final Score' inputType='number' getDataFromInput={this.getInputData}/>
-                    <div className="FinalScoreButton" onClick={this.endVoting}> End Voting For {this.props.storyName}</div>
+                    <div className="FinalScoreButton" onClick={this.endVoting}> End Voting
+                        For {this.props.storyName}</div>
                 </div>
 
             </div>

@@ -68,6 +68,9 @@ class AddStoryListPage extends Component {
         axios.post("http://localhost:3001/api/CreateSession", {
             id: idToBeAdded,
             sprintName: name
+        })
+            .then(()=> {
+            this.setState({redirect: true});
         });
     };
     createStoryReq = (dt, i) => {
@@ -128,8 +131,7 @@ class AddStoryListPage extends Component {
 
     startSession = () => {
         if (this.state.numberOfVoters !== '0' && this.state.sessionName !== '' && this.state.textAreaVal !== '') {
-            // session baslatılacak.
-            // bilgiler gönderilecek.
+
             console.log('startSesssion');
 
             this.createSessionReq(this.state.sessionName);
@@ -140,17 +142,13 @@ class AddStoryListPage extends Component {
             });
             const storyReq = this.prepareStories();
             storyReq.forEach((el, i) => {
-                debugger;
                 this.createStoryReq(el, i);
             });
-
-
-            this.setState({redirect: true});
         }
     };
     prepareVotersData = () => {
         let votersData = [];
-        for (let i = 0; i < this.state.numberOfVoters; i++) {
+        for (let i = 0; i < this.state.numberOfVoters-1; i++) {
             votersData.push('0')
         }
         return votersData;

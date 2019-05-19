@@ -5,110 +5,93 @@ import ActiveStory from "../components/ActiveStory";
 import ScrumMasterPanel from "../components/ScrumMasterPanel";
 import BaseContainer from "../components/BaseContainer";
 
-
-const storyListData = [{
-    'name': 'Story1',
-    'point': '5',
-    'status': 'voted'
-}, {
-    'name': 'Story2',
-    'point': '124',
-    'status': 'voted'
-}, {
-    'name': 'Story2',
-    'point': '124',
-    'status': 'voted'
-}, {
-    'name': 'Story2',
-    'point': '124',
-    'status': 'voted'
-}, {
-    'name': 'Story2',
-    'point': '124',
-    'status': 'voted'
-}, {
-    'name': 'Story2',
-    'point': '124',
-    'status': 'voted'
-}, {
-    'name': 'Story2',
-    'point': '124',
-    'status': 'voted'
-}, {
-    'name': 'Story3',
-    'point': '',
-    'status': 'Active'
-}, {
-    'name': 'Story4',
-    'point': '',
-    'status': 'Not Voted'
-}, {
-    'name': 'Story5',
-    'point': '',
-    'status': 'Not Voted'
-}];
-
-const voterInfoList = [
-    {
-        'name': 'Serkan',
-        'status': 'voted',
-        'point': '2'
-    }, {
-        'name': 'Serkan2',
-        'status': 'Not Voted',
-        'point': ''
-    }, {
-        'name': 'Serkan3',
-        'status': 'voted',
-        'point': '21'
-    }, {
-        'name': 'Serkan4',
-        'status': 'Not Voted',
-        'point': ''
-    }];
-
-
 class ScrumMasterPlanningPage extends Component {
     constructor(props) {
         super(props);
     }
 
-    state ={
-        voteEnded: false
+    state = {
+        voteEnded: false,
+        sprintData: undefined,
+        storyData: undefined,
+        voterData: undefined
     };
 
     componentDidMount() {
         // getCurrentStoryInfo
         // getStoryList() her 2 sn de bir güncellenecek.
         // getVoterInfoList
-        const sprintData =  this.getSprintDataFromDb();
-        const storyData =  this.getStoryDataFromDb();
-        const voterData =  this.getVoterDataFromDb();
-
-        debugger;
+        // TODO: this.setActiveStory(id);
+        this.getSprintDataFromDb();
+        this.getStoryDataFromDb();
+        this.getVoterDataFromDb();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         // this.props.votedEnded bilgisi alınacak ve buna göre ScrumMasterPanel güncellenecek.
         // updateVoterInfoList
+        if (prevState.voterData !== this.state.voterData) {
+            console.log(this.state.voterData);
+        }
+
+        if (prevState.sprintData !== this.state.sprintData) {
+            console.log(this.state.sprintData);
+        }
+
+        if (prevState.storyData !== this.state.storyData) {
+            console.log(this.state.storyData);
+        }
     }
 
     getSprintDataFromDb = () => {
         fetch("http://localhost:3001/api/getSprintData")
             .then(data => data.json())
-            .then(res => this.setState({data: res.data}));
+            .then(res => {
+                    this.setState({
+                        sprintData: {id: res.data[0].id, sprintName: res.data[0].sprintName}
+                    })
+                }
+            );
     };
 
     getStoryDataFromDb = () => {
         fetch("http://localhost:3001/api/getStoryData")
             .then(data => data.json())
-            .then(res => this.setState({data: res.data}));
+            .then(res => {
+                    this.setState({
+                        storyData: res.data.sort((a, b) => {
+                            return a.id - b.id;
+                        })
+                            .map(item => {
+                                return {
+                                    id: item.id,
+                                    sprintId: item.sprintId,
+                                    storyName: item.storyName,
+                                    status: item.status,
+                                    finalScore: item.finalScore
+                                }
+                            })
+                    })
+                }
+            );
     };
 
     getVoterDataFromDb = () => {
         fetch("http://localhost:3001/api/getVoterData")
             .then(data => data.json())
-            .then(res => this.setState({data: res.data}));
+            .then(res => this.setState(
+                {
+                    voterData: res.data.sort((a, b) => {
+                        return a.id - b.id;
+                    })
+                        .map(item => {
+                            return {
+                                id: item.id,
+                                score: item.score
+                            }
+                        })
+                })
+            );
     };
 
     sendMyPoint = (point) => {
@@ -124,16 +107,18 @@ class ScrumMasterPlanningPage extends Component {
     };
 
     getCurrentStoryName = () => {
-        return 'ExampleStory'
+        if(!this.state.storyData) return '';
+        return this.state.storyData.find((elm) => { return elm.status === 'Active'}).storyName;
     };
 
     render() {
         return (
             <BaseContainer>
                 <div className="ScrumMasterPlanningPage">
-                    <StoryList storyList={storyListData}/>
+                    <StoryList storyList={this.state.storyData}/>
                     <ActiveStory storyName={this.getCurrentStoryName()} sendPoint={this.sendMyPoint}/>
-                    <ScrumMasterPanel storyName='ExampleStory' voterInfo={voterInfoList} voteEnded={this.state.voteEnded} endVoting={this.endVoting} />
+                    <ScrumMasterPanel storyName={this.getCurrentStoryName()} voterInfo={this.state.voterData}
+                                      voteEnded={this.state.voteEnded} endVoting={this.endVoting}/>
                 </div>
             </BaseContainer>
         )

@@ -53,8 +53,6 @@ class DeveloperPlanningPage extends Component {
         const sprintData =  this.getSprintDataFromDb();
         const storyData =  this.getStoryDataFromDb();
         const voterData =  this.getVoterDataFromDb();
-
-        debugger;
     }
 
 
