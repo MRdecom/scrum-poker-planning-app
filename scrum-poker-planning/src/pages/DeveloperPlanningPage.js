@@ -3,13 +3,15 @@ import "../style.css";
 import BaseContainer from "../components/BaseContainer";
 import StoryList from "../components/StoryList";
 import ActiveStory from "../components/ActiveStory";
+import axios from "axios";
 
 class DeveloperPlanningPage extends Component {
 
     state = {
         sprintData: undefined,
         storyData: undefined,
-        voterData: undefined
+        voterData: undefined,
+        intervalIsSet: false
     };
 
     componentDidMount() {
@@ -17,29 +19,41 @@ class DeveloperPlanningPage extends Component {
         this.getSprintDataFromDb();
         this.getStoryDataFromDb();
         this.getVoterDataFromDb();
+
+        if (!this.state.intervalIsSet) {
+            let interval = setInterval(this.getStoryDataFromDb, 2000);
+            this.setState({ intervalIsSet: interval });
+        }
+
+        this.setState({
+            activeStoryId: this.getActiveStoryId()
+        })
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         // this.props.votedEnded bilgisi alınacak ve buna göre ScrumMasterPanel güncellenecek.
         // updateVoterInfoList
         if (prevState.voterData !== this.state.voterData) {
-            console.log(this.state.voterData);
         }
-
         if (prevState.sprintData !== this.state.sprintData) {
-            console.log(this.state.sprintData);
         }
-
-        if (prevState.storyData !== this.state.storyData) {
-            console.log(this.state.storyData);
+        if (prevState.activeStoryId !== this.state.activeStoryId) {
         }
     }
 
-    getCurrentStoryName = () => {
+    getActiveStoryName = () => {
         if (!this.state.storyData) return '';
+        const item = this.state.storyData.find((elm) => {
+            return elm.status === 'Active'
+        });
+        return item ? item.storyName : '';
+    };
+
+    getActiveStoryId = () => {
+        if (!this.state.storyData) return 0;
         return this.state.storyData.find((elm) => {
             return elm.status === 'Active'
-        }).storyName;
+        }).id;
     };
 
     getSprintDataFromDb = () => {
@@ -69,7 +83,8 @@ class DeveloperPlanningPage extends Component {
                                     status: item.status,
                                     finalScore: item.finalScore
                                 }
-                            })
+                            }),
+                            activeStoryId: this.getActiveStoryId()
                     })
                 }
             );
@@ -94,7 +109,11 @@ class DeveloperPlanningPage extends Component {
     };
 
     sendMyPoint = (point) => {
-        console.log(point);
+        axios.post("http://localhost:3001/api/SendMyScore", {
+            score: point.toString()
+        }).then(() => {
+            this.getStoryDataFromDb();
+        });
     };
 
     render() {
@@ -102,7 +121,7 @@ class DeveloperPlanningPage extends Component {
             <BaseContainer>
                 <div className="DeveloperPlanningPage">
                     <StoryList storyList={this.state.storyData}/>
-                    <ActiveStory storyName={this.getCurrentStoryName()} sendPoint={this.sendMyPoint}/>
+                    <ActiveStory storyName={this.getActiveStoryName()} sendPoint={this.sendMyPoint}/>
                 </div>
             </BaseContainer>
         )

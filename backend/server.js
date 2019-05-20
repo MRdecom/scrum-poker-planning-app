@@ -106,6 +106,15 @@ router.post("/UpdateToVotedStory", (req, res) => {
     });
 });
 
+router.post("/SendMyScore", (req, res) => {
+    console.log('SendMyScore');
+    const {score} = req.body;
+    VotersData.findOneAndUpdate({score: '0'},{$set:{score:score}}, err => {
+        if (err) return res.json({success: false, error: err});
+        return res.json({success: true});
+    });
+});
+
 
 // {id: id},{$set:{message:update}}
 

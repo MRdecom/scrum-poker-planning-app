@@ -12,7 +12,9 @@ class ScrumMasterPlanningPage extends Component {
         sprintData: undefined,
         storyData: undefined,
         voterData: undefined,
-        activeStoryId: undefined
+        activeStoryId: undefined,
+        numberOfVoters: undefined,
+        intervalIsSet: false
     };
 
     async componentDidMount() {
@@ -20,27 +22,29 @@ class ScrumMasterPlanningPage extends Component {
         // getStoryList() her 2 sn de bir güncellenecek.
         // getVoterInfoList
         await this.storyActivateById(0);
-
+        if (!this.state.intervalIsSet) {
+            let interval = setInterval(this.getVoterDataFromDb, 2000);
+            this.setState({ intervalIsSet: interval });
+        }
 
         this.getSprintDataFromDb();
         this.getStoryDataFromDb();
         this.getVoterDataFromDb();
 
-
+        this.setState({
+            numberOfVoters: this.state.voterData ? this.state.voterData.length : 0
+        })
     }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
-        // this.props.votedEnded bilgisi alınacak ve buna göre ScrumMasterPanel güncellenecek.
-        // updateVoterInfoList
+
         if (prevState.voterData !== this.state.voterData) {
-            console.log(this.state.voterData);
         }
 
         if (prevState.sprintData !== this.state.sprintData) {
-            console.log(this.state.sprintData);
         }
 
         if (prevState.storyData !== this.state.storyData) {
-            console.log(this.state.storyData);
         }
     }
 
@@ -95,7 +99,11 @@ class ScrumMasterPlanningPage extends Component {
 
 
     sendMyPoint = (point) => {
-        console.log(point);
+        axios.post("http://localhost:3001/api/SendMyScore", {
+            score: point.toString()
+        }).then(() => {
+            this.getStoryDataFromDb();
+        });
     };
 
 
@@ -110,15 +118,16 @@ class ScrumMasterPlanningPage extends Component {
             });
             const currentId = this.getActiveStoryId();
             await this.updateToVotedStory(currentId);
-            await this.storyActivateById(currentId+1);
+            await this.storyActivateById(currentId + 1);
             await this.getStoryDataFromDb();
+
         });
     };
 
     storyActivateById = (idToUpdate) => {
         axios.post("http://localhost:3001/api/StoryActivateById", {
             id: idToUpdate,
-            status:'Active'
+            status: 'Active'
         }).then(() => {
             this.getStoryDataFromDb();
         });
