@@ -11,7 +11,8 @@ class DeveloperPlanningPage extends Component {
         sprintData: undefined,
         storyData: undefined,
         voterData: undefined,
-        intervalIsSet: false
+        intervalIsSet: false,
+        userVoted: false
     };
 
     componentDidMount() {
@@ -38,6 +39,9 @@ class DeveloperPlanningPage extends Component {
         if (prevState.sprintData !== this.state.sprintData) {
         }
         if (prevState.activeStoryId !== this.state.activeStoryId) {
+            this.setState({
+                userVoted:false
+            })
         }
     }
 
@@ -121,7 +125,7 @@ class DeveloperPlanningPage extends Component {
             <BaseContainer>
                 <div className="DeveloperPlanningPage">
                     <StoryList storyList={this.state.storyData}/>
-                    <ActiveStory storyName={this.getActiveStoryName()} sendPoint={this.sendMyPoint}/>
+                    <ActiveStory userVoted={this.state.userVoted}  storyName={this.getActiveStoryName()} sendPoint={this.sendMyPoint}/>
                 </div>
             </BaseContainer>
         )

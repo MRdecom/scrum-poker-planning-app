@@ -6,9 +6,9 @@ const listOfValues = ['1', '2', '3', '5', '8', '13', '21', '34', '55', '89', '13
 
 
 export default class ActiveStory extends React.Component {
-
     state = {
-        info: 'Please Vote!!'
+        info: 'Please Vote!!',
+        userVoted: false
     };
 
     static propTypes = {
@@ -19,17 +19,17 @@ export default class ActiveStory extends React.Component {
         storyName: 'storyName',
     };
 
-    sendPoint(point,i) {
-        this.props.sendPoint(point);
-        this.setState({
-            info: point + ' Voted',
-            selectedItem: i
-        });
-
-        this.setState({ selectedItem: i })
+    sendPoint(point, i) {
+        if (!this.props.userVoted ) {
+            this.props.sendPoint(point);
+            this.setState({
+                info: point + ' Voted',
+                selectedItem: i,
+            });
+        }
     };
 
-    changeMyCssClass (i){
+    changeMyCssClass(i) {
         const isItemSelected = this.state.selectedItem === i;
         return isItemSelected ? "Block GreenBlock" : "Block"
     }
@@ -42,7 +42,7 @@ export default class ActiveStory extends React.Component {
                 <div className="PointBlock">
                     {listOfValues.map((elm, i) => {
                         return (
-                            <div key={i} onClick={this.sendPoint.bind(this, elm,i)}
+                            <div key={i} onClick={this.sendPoint.bind(this, elm, i)}
                                  className={this.changeMyCssClass(i)}>
                                 <p>{elm}</p>
                             </div>

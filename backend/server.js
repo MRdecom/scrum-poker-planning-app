@@ -115,6 +115,14 @@ router.post("/SendMyScore", (req, res) => {
     });
 });
 
+router.post("/UpdateToZeroVote", (req, res) => {
+    const {id, score} = req.body;
+    VotersData.findOneAndUpdate({id: id},{$set:{score:score}}, err => {
+        if (err) return res.json({success: false, error: err});
+        return res.json({success: true});
+    });
+});
+
 
 // {id: id},{$set:{message:update}}
 

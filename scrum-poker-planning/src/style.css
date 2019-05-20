@@ -207,3 +207,9 @@
     position: relative;
     top: -170px;
 }
+
+.MyLink {
+    position: absolute;
+    left: 20%;
+    top: 10%;
+}

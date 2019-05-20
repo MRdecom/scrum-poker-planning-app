@@ -10,8 +10,7 @@ export default class ScrumMasterPanel extends React.Component {
     }
 
     state = {
-        finalPoint: '',
-        masterScore: '0'
+        finalPoint: ''
     };
 
     static propTypes = {
@@ -24,7 +23,8 @@ export default class ScrumMasterPanel extends React.Component {
     static defaultProps = {
         voterInfo: undefined,
         voteEnded: false,
-        storyName: ''
+        storyName: '',
+        masterScore: '0'
     };
 
     endVoting = () => {
@@ -72,9 +72,9 @@ export default class ScrumMasterPanel extends React.Component {
                     <tr>
                         <td>Scrum Master</td>
                         <td> : {this.props.voteEnded
-                            ? this.state.masterScore
-                            : (this.state.masterScore !== '0'
-                                ? this.state.masterScore
+                            ? this.props.masterScore
+                            : (this.props.masterScore !== '0'
+                                ? this.props.masterScore
                                 : 'Not Voted')}
                         </td>
                     </tr>

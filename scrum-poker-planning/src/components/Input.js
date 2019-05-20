@@ -29,7 +29,7 @@ export default class Input extends React.Component {
         return (
             <div className="Input">
                 <label>{this.props.labelText}</label>
-                <input type={this.props.inputType} onChange={this.updateInputValue}/>
+                <input type={this.props.inputType} onChange={this.updateInputValue} maxLength={200}/>
             </div>
         );
     }
